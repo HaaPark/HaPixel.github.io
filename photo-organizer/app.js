@@ -7,6 +7,7 @@ const $title = document.getElementById('pageTitle');
 const $back = document.getElementById('btnBack');
 const $info = document.getElementById('btnInfo');
 const $fileInput = document.getElementById('fileInput');
+const $folderInput = document.getElementById('folderInput');
 
 const nav = { stack: [{ screen: 'home', params: {} }] };
 let activeUrls = [];
@@ -170,6 +171,10 @@ async function importFiles(fileList) {
 }
 
 $fileInput.addEventListener('change', (e) => {
+  importFiles(e.target.files);
+  e.target.value = '';
+});
+$folderInput.addEventListener('change', (e) => {
   importFiles(e.target.files);
   e.target.value = '';
 });
@@ -374,11 +379,14 @@ async function renderHome() {
     ${totalPhotos === 0 ? `
       <div class="card">
         <p style="margin-top:0">아직 가져온 사진이 없어요. 아이클라우드에서 내보낸 사진 폴더를 선택해서 시작하세요.</p>
-        <button class="primary-btn" id="btnImport">📥 사진 가져오기</button>
+        <button class="primary-btn" id="btnImportFolder">📁 폴더 통째로 가져오기</button>
+        <button class="secondary-btn" id="btnImport" style="width:100%;margin-top:8px">📥 사진 여러 장 선택해서 가져오기</button>
+        <p class="info-box" style="margin-top:10px">맥에서는 "폴더 통째로"로 한 번에, 폰에서는 사진 앱에서 여러 장을 골라 선택하면 돼요 — 한 장씩 보낼 필요 없어요.</p>
       </div>
     ` : `
       <div class="nav-grid">
-        <button class="nav-btn" id="btnImport"><span class="emoji">📥</span>사진 더 가져오기</button>
+        <button class="nav-btn" id="btnImportFolder"><span class="emoji">📁</span>폴더 통째로 가져오기</button>
+        <button class="nav-btn" id="btnImport"><span class="emoji">📥</span>사진 여러 장 가져오기</button>
         <button class="nav-btn" data-go="quicktag"><span class="emoji">⚡</span>빠른 분류<span class="badge">${untagged}장 남음</span></button>
         <button class="nav-btn" data-go="blur"><span class="emoji">🌫️</span>흔들림 정리<span class="badge">${blurCandidates}장 후보</span></button>
         <button class="nav-btn" data-go="year"><span class="emoji">📅</span>연도별 보기</button>
@@ -410,6 +418,8 @@ async function renderHome() {
   $main.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => goTo(b.dataset.go)));
   const btnImport = document.getElementById('btnImport');
   if (btnImport) btnImport.addEventListener('click', () => $fileInput.click());
+  const btnImportFolder = document.getElementById('btnImportFolder');
+  if (btnImportFolder) btnImportFolder.addEventListener('click', () => $folderInput.click());
   const btnFace = document.getElementById('btnFaceGroup');
   if (btnFace) btnFace.addEventListener('click', () => { if (unnamed > 0) goTo('faceNaming'); else runFaceGrouping(); });
 }
