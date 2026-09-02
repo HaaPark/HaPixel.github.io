@@ -122,6 +122,15 @@ async function saveTag(tag) {
 
 let importState = { running: false, done: 0, total: 0, skipped: 0, added: 0 };
 
+function updateImportProgressUI() {
+  const fill = document.getElementById('importProgressFill');
+  const text = document.getElementById('importProgressText');
+  if (!fill || !text) return; // not on the home screen right now — fine, render() will catch up on return
+  const pct = importState.total ? (importState.done / importState.total) * 100 : 0;
+  fill.style.width = pct + '%';
+  text.textContent = `사진 가져오는 중… ${importState.done}/${importState.total} · 새로 추가 ${importState.added} · 이미 있음(건너뜀) ${importState.skipped}`;
+}
+
 async function importFiles(fileList) {
   const files = Array.from(fileList).filter((f) => f.type.startsWith('image/') || /\.(heic|heif|jpg|jpeg|png|webp|gif)$/i.test(f.name));
   if (files.length === 0) return;
@@ -136,7 +145,7 @@ async function importFiles(fileList) {
       if (existing) {
         importState.skipped++;
         importState.done++;
-        if (importState.done % 5 === 0) render();
+        updateImportProgressUI();
         continue;
       }
 
@@ -174,7 +183,7 @@ async function importFiles(fileList) {
       console.warn('import failed for', file.name, e);
     }
     importState.done++;
-    if (importState.done % 3 === 0) render();
+    updateImportProgressUI();
   }
   importState.running = false;
   render();
@@ -193,6 +202,14 @@ $folderInput.addEventListener('change', (e) => {
 // ---------- face grouping ----------
 
 let faceJob = { running: false, done: 0, total: 0, stage: '' };
+
+function updateFaceProgressUI() {
+  const fill = document.getElementById('faceProgressFill');
+  const text = document.getElementById('faceProgressText');
+  if (!fill || !text) return;
+  fill.style.width = (faceJob.total ? (faceJob.done / faceJob.total) * 100 : 20) + '%';
+  text.textContent = `${faceJob.stage} ${faceJob.total ? `(${faceJob.done}/${faceJob.total})` : ''}`;
+}
 
 async function runFaceGrouping() {
   if (faceJob.running) return;
@@ -229,7 +246,7 @@ async function runFaceGrouping() {
       await db.put('faces', { photoId: p.id, faces: [] });
     }
     faceJob.done++;
-    if (faceJob.done % 5 === 0) render();
+    updateFaceProgressUI();
     await new Promise((r) => setTimeout(r, 0));
   }
 
@@ -419,14 +436,14 @@ async function renderHome() {
 
     ${importState.running ? `
       <div class="card">
-        <div>사진 가져오는 중… (${importState.done}/${importState.total})</div>
-        <div class="progress-bar"><div style="width:${(importState.done / importState.total) * 100}%"></div></div>
+        <div id="importProgressText">사진 가져오는 중… ${importState.done}/${importState.total} · 새로 추가 ${importState.added} · 이미 있음(건너뜀) ${importState.skipped}</div>
+        <div class="progress-bar"><div id="importProgressFill" style="width:${importState.total ? (importState.done / importState.total) * 100 : 0}%"></div></div>
       </div>
     ` : ''}
     ${faceJob.running ? `
       <div class="card">
-        <div>${faceJob.stage} ${faceJob.total ? `(${faceJob.done}/${faceJob.total})` : ''}</div>
-        <div class="progress-bar"><div style="width:${faceJob.total ? (faceJob.done / faceJob.total) * 100 : 20}%"></div></div>
+        <div id="faceProgressText">${faceJob.stage} ${faceJob.total ? `(${faceJob.done}/${faceJob.total})` : ''}</div>
+        <div class="progress-bar"><div id="faceProgressFill" style="width:${faceJob.total ? (faceJob.done / faceJob.total) * 100 : 20}%"></div></div>
       </div>
     ` : ''}
 
