@@ -15,7 +15,17 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="app">
+<div id="lockScreen" class="lock-screen">
+  <form id="lockForm" class="lock-card" autocomplete="off">
+    <div class="lock-icon">🔒</div>
+    <h2>비밀번호</h2>
+    <input type="password" id="lockInput" inputmode="numeric" autocomplete="off" placeholder="••••••" autofocus>
+    <button type="submit" class="primary-btn">확인</button>
+    <div id="lockError" class="lock-error hidden">비밀번호가 틀렸어요</div>
+  </form>
+</div>
+
+<div id="app" class="hidden">
   <header class="topbar">
     <button class="icon-btn" id="btnBack" title="뒤로">←</button>
     <h1 id="pageTitle">사진 정리</h1>
@@ -30,6 +40,7 @@
 <input type="file" id="fileInput" accept="image/*" multiple class="hidden">
 <input type="file" id="folderInput" accept="image/*" multiple webkitdirectory class="hidden">
 
+<script src="lock.js"></script>
 <script src="db.js"></script>
 <script src="exif.js"></script>
 <script src="blur.js"></script>

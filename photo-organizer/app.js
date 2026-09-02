@@ -796,10 +796,16 @@ function showInfo() {
 
 // ---------- boot ----------
 
-(async function boot() {
+async function boot() {
   await db.init();
   render();
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
-})();
+}
+
+if (document.getElementById('app').classList.contains('hidden')) {
+  window.addEventListener('app-unlocked', boot, { once: true });
+} else {
+  boot();
+}

@@ -352,3 +352,33 @@ footer.bottombar .row { display: flex; gap: 10px; max-width: 720px; width: 100%;
 }
 .year-accordion summary::-webkit-details-marker { display: none; }
 .year-accordion summary .count { font-weight: 400; color: var(--text-dim); font-size: 13px; }
+
+.lock-screen {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg);
+  z-index: 1000;
+  padding: 20px;
+}
+.lock-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+}
+.lock-card .lock-icon { font-size: 40px; }
+.lock-card h2 { margin: 0 0 4px; font-size: 18px; }
+.lock-card input {
+  background: var(--panel-2);
+  border: 1px solid #333844;
+  color: var(--text);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 4px;
+}
+.lock-error { color: var(--danger); font-size: 13px; }

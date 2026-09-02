@@ -2,7 +2,7 @@
 // Photo data itself lives in IndexedDB, not here.
 const CACHE = 'photo-organizer-v1';
 const SHELL = [
-  './', './index.html', './style.css', './app.js', './db.js', './exif.js', './blur.js', './faces.js',
+  './', './index.html', './style.css', './lock.js', './app.js', './db.js', './exif.js', './blur.js', './faces.js',
   './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png',
 ];
 
