@@ -15,15 +15,15 @@
   }
 
   :root{
-    --ivory:#F7F0DF;
-    --paper:#FFFCF4;
-    --paper-alt:#FBF2DE;
-    --ink:#3B2E22;
-    --ink-soft:#82715c;
-    --line:#E4D0A6;
+    --ivory:#FFFFFF;
+    --paper:#FFFFFF;
+    --paper-alt:#F6F5F2;
+    --ink:#2B2926;
+    --ink-soft:#9A9086;
+    --line:#ECE7E0;
     --amber:#AD733A;
     --amber-deep:#875426;
-    --shadow: 0 20px 44px rgba(59,46,34,.12);
+    --shadow: 0 16px 34px rgba(20,17,12,.07);
   }
 
   *{box-sizing:border-box;}
@@ -44,25 +44,17 @@
   h1,h2,h3,p{margin:0;}
   h2{text-wrap:balance;}
 
-  .paper-texture{
-    background-image:
-      radial-gradient(circle at 12% 18%, rgba(173,115,58,.05), transparent 40%),
-      radial-gradient(circle at 85% 76%, rgba(76,107,135,.05), transparent 42%);
-  }
-
   /* ---------- Cover / Envelope ---------- */
   .cover{
     position:fixed; inset:0; z-index:40;
     display:flex; align-items:center; justify-content:center;
-    background:
-      radial-gradient(circle at 50% 14%, rgba(173,115,58,.10), transparent 46%),
-      var(--ivory);
+    background:var(--ivory);
     cursor:pointer;
     transition:opacity .5s ease .55s;
   }
   .cover.opened{ opacity:0; pointer-events:none; }
   @media (hover:hover){
-    .cover:hover .envelope-body{ transform:translateY(-3px); box-shadow:0 26px 52px rgba(59,46,34,.16); }
+    .cover:hover .envelope-body{ transform:translateY(-3px); box-shadow:0 22px 44px rgba(20,17,12,.10); }
   }
   .cover:active .envelope-body{ transform:scale(.98); }
   .envelope-body{ transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s ease; }
@@ -215,7 +207,7 @@
   .polaroid{
     position:relative; margin:0; background:#fff; padding:12px 12px 30px;
     width:min(64vw,224px);
-    box-shadow:0 20px 38px rgba(59,46,34,.22), 0 2px 6px rgba(59,46,34,.1);
+    box-shadow:0 16px 30px rgba(20,17,12,.14), 0 2px 6px rgba(20,17,12,.06);
     transform:rotate(-4deg);
     transition:transform .5s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
     cursor:pointer;
@@ -223,10 +215,10 @@
   .polaroid::before{
     content:""; position:absolute; top:-10px; left:50%; transform:translateX(-50%) rotate(-2deg);
     width:56px; height:20px; border-radius:2px;
-    background:rgba(173,115,58,.28);
+    background:rgba(173,115,58,.22);
   }
   .polaroid img{ display:block; width:100%; }
-  .polaroid:hover{ box-shadow:0 26px 46px rgba(59,46,34,.26), 0 2px 6px rgba(59,46,34,.12); }
+  .polaroid:hover{ box-shadow:0 22px 40px rgba(20,17,12,.18), 0 2px 6px rgba(20,17,12,.08); }
   .polaroid.straight{ transform:rotate(0deg) scale(1.05); }
 
   /* scroll progress */
@@ -405,7 +397,7 @@
   </div>
 </div>
 
-<main class="content paper-texture" id="content">
+<main class="content" id="content">
 
   <section class="letter" id="greeting">
     <div class="polaroid-wrap intro-el" id="polaroid-wrap">
