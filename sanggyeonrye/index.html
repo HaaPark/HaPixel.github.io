@@ -23,10 +23,6 @@
     --line:#E4D0A6;
     --amber:#AD733A;
     --amber-deep:#875426;
-    --cheong:#4C6B87;
-    --cheong-soft:#DFE7EC;
-    --hong:#B4525A;
-    --hong-soft:#F4DFE0;
     --shadow: 0 20px 44px rgba(59,46,34,.12);
   }
 
@@ -77,10 +73,10 @@
     padding:0 8px;
   }
   .cover-eyebrow{
-    font-size:12px; font-weight:600; letter-spacing:.32em;
+    font-size:13px; font-weight:600; letter-spacing:.08em;
     color:var(--amber-deep); margin-bottom:18px;
+    font-variant-numeric:tabular-nums;
   }
-  .cover-eyebrow .dot{ color:var(--hong); margin:0 6px; }
   .cover-title{
     font-size:clamp(26px,7.6vw,32px);
     font-weight:800; line-height:1.42; letter-spacing:-.01em;
@@ -132,7 +128,7 @@
     transition:opacity .35s ease .25s, transform .35s ease .25s;
   }
   .cover.opened .seal{ opacity:0; transform:translate(-50%,-50%) scale(.4); }
-  .seal svg{ width:26px; height:14px; color:var(--paper); }
+  .seal-mark{ width:11px; height:11px; background:var(--paper); transform:rotate(45deg); }
 
   .letter-peek{
     position:absolute; left:6%; right:6%; bottom:-4%; height:70%;
@@ -161,16 +157,17 @@
     padding:0 26px;
   }
   .letter-eyebrow{
-    font-size:12px; font-weight:600; letter-spacing:.28em; color:var(--amber-deep);
+    font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--amber-deep);
     text-align:center;
   }
   .letter-body{
-    margin-top:22px; font-size:16px; line-height:2; color:var(--ink);
-    text-align:center;
-    white-space:pre-line;
+    margin-top:22px; font-size:16px; line-height:1.9; color:var(--ink);
+    text-align:center; letter-spacing:-.005em;
   }
+  .letter-body p + p{ margin-top:1.3em; }
   .letter-sign{
-    margin-top:26px; text-align:center; font-size:14.5px; color:var(--ink-soft); font-weight:600;
+    margin-top:28px; text-align:center; font-size:14.5px; color:var(--ink-soft); font-weight:600;
+    letter-spacing:.02em;
   }
 
   .divider{
@@ -178,7 +175,7 @@
     margin:46px 0; padding:0 26px;
   }
   .divider .line{ flex:1; height:1px; background:var(--line); }
-  .divider svg{ width:30px; height:16px; color:var(--amber); flex-shrink:0; }
+  .divider .dot{ width:5px; height:5px; border-radius:50%; background:var(--amber); flex-shrink:0; }
 
   section.card{
     margin:0 18px 18px; padding:26px 24px;
@@ -190,7 +187,7 @@
   section.card + section.card{ margin-top:14px; }
 
   .eyebrow{
-    font-size:12px; font-weight:700; letter-spacing:.22em; color:var(--amber-deep);
+    font-size:12.5px; font-weight:700; letter-spacing:.05em; color:var(--amber-deep);
   }
   .card h2{
     margin-top:8px; font-size:21px; font-weight:800; color:var(--ink);
@@ -235,7 +232,7 @@
   /* scroll progress */
   .scroll-progress{
     position:fixed; top:0; left:0; height:3px; width:0%;
-    background:linear-gradient(90deg,var(--cheong),var(--amber),var(--hong));
+    background:var(--amber);
     z-index:35; opacity:0; transition:opacity .4s ease;
   }
   body:not(.sealed) .scroll-progress{ opacity:1; }
@@ -295,7 +292,7 @@
   /* time */
   .time-row{ display:flex; align-items:baseline; gap:12px; margin-top:14px; }
   .time-date{ font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; }
-  .time-day{ font-size:14px; font-weight:600; color:var(--hong); }
+  .time-day{ font-size:14px; font-weight:600; color:var(--amber-deep); }
   .time-range{
     margin-top:6px; font-size:16px; color:var(--ink-soft); font-variant-numeric:tabular-nums;
   }
@@ -307,40 +304,30 @@
   }
   .table-wrap{ margin-top:20px; }
   .table-cap{
-    text-align:center; font-size:12px; font-weight:700; letter-spacing:.18em;
+    text-align:center; font-size:12px; font-weight:700; letter-spacing:.04em;
     color:var(--ink-soft);
   }
+  .side-heads{
+    display:grid; grid-template-columns:1fr auto 1fr;
+    gap:8px 10px; margin-top:14px;
+  }
+  .side-head{ text-align:center; font-size:13px; font-weight:800; color:var(--ink); }
+  .side-head.bride{ grid-column:3; }
   .table-grid{
     display:grid; grid-template-columns:1fr auto 1fr;
-    gap:8px 10px; margin-top:10px; align-items:stretch;
+    gap:8px 10px; margin-top:8px; align-items:stretch;
   }
   .side{ display:flex; flex-direction:column; gap:8px; }
-  .side.groom{ align-items:stretch; }
-  .side.bride{ align-items:stretch; }
   .runner{
-    width:14px; border-radius:8px;
-    background:repeating-linear-gradient(180deg,var(--amber) 0 10px, var(--hong) 10px 20px, var(--cheong) 20px 30px);
-    opacity:.35;
+    width:8px; border-radius:8px;
+    background:var(--amber); opacity:.28;
   }
   .seat{
     border-radius:10px; padding:10px 8px; text-align:center;
-    border:1px solid transparent;
+    background:var(--paper-alt); border:1px solid var(--line);
   }
-  .seat .rel{ font-size:11px; font-weight:700; letter-spacing:.02em; }
-  .seat .name{ font-size:14px; font-weight:700; margin-top:2px; }
-  .side.groom .seat{ background:var(--cheong-soft); }
-  .side.groom .seat .rel{ color:var(--cheong); }
-  .side.bride .seat{ background:var(--hong-soft); }
-  .side.bride .seat .rel{ color:var(--hong); }
-  .table-labels{
-    display:flex; justify-content:space-between; margin-top:10px; padding:0 2px;
-    font-size:11.5px; color:var(--ink-soft); font-weight:600;
-  }
-  .legend{ display:flex; gap:16px; margin-top:16px; justify-content:center; }
-  .legend-item{ display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink-soft); }
-  .legend-dot{ width:9px; height:9px; border-radius:50%; }
-  .legend-dot.groom{ background:var(--cheong); }
-  .legend-dot.bride{ background:var(--hong); }
+  .seat .rel{ font-size:11px; font-weight:700; letter-spacing:.02em; color:var(--amber-deep); }
+  .seat .name{ font-size:14px; font-weight:700; margin-top:2px; color:var(--ink); }
 
   /* menu */
   .menu-badge{
@@ -351,7 +338,7 @@
   .menu-group{ margin-top:20px; }
   .menu-group:first-of-type{ margin-top:18px; }
   .menu-group-title{
-    font-size:12px; font-weight:700; letter-spacing:.14em; color:var(--ink-soft);
+    font-size:12px; font-weight:700; letter-spacing:.03em; color:var(--ink-soft);
     padding-bottom:6px; border-bottom:1px solid var(--line);
   }
   .menu-items{ margin-top:10px; display:flex; flex-wrap:wrap; gap:8px 10px; }
@@ -382,17 +369,18 @@
   /* closing */
   .closing{ padding:10px 26px 0; text-align:center; }
   .closing-body{
-    font-size:15.5px; line-height:2; color:var(--ink); white-space:pre-line;
+    font-size:15.5px; line-height:1.9; color:var(--ink); letter-spacing:-.005em;
   }
+  .closing-body p + p{ margin-top:1.3em; }
   .closing-sign{
-    margin-top:20px; font-size:15px; font-weight:800; color:var(--amber-deep);
+    margin-top:22px; font-size:15px; font-weight:800; color:var(--amber-deep);
+    letter-spacing:.02em;
   }
 
   footer{
     margin-top:50px; text-align:center; padding:0 26px;
   }
-  footer .fdate{ font-size:12.5px; color:var(--ink-soft); }
-  footer .fmark{ margin-top:10px; color:var(--line); font-size:11px; letter-spacing:.3em; }
+  footer .fdate{ font-size:12.5px; color:var(--ink-soft); letter-spacing:.02em; }
 </style>
 </head>
 <body class="sealed">
@@ -401,7 +389,7 @@
 
 <div class="cover" id="cover" role="button" tabindex="0" aria-label="눌러서 초대장 열기">
   <div class="cover-inner">
-    <p class="cover-eyebrow">청실<span class="dot">·</span>홍실</p>
+    <p class="cover-eyebrow">2026. 9. 6. SUN</p>
     <h1 class="cover-title">민지 &amp; 병주의<br>상견례에 초대합니다</h1>
     <p class="cover-sub">두 사람의 인연이<br>두 집안의 인연이 되는 날</p>
     <div class="envelope" aria-hidden="true">
@@ -409,7 +397,7 @@
         <div class="letter-peek"></div>
         <div class="envelope-flap"></div>
         <div class="seal">
-          <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+          <span class="seal-mark" aria-hidden="true"></span>
         </div>
       </div>
     </div>
@@ -426,26 +414,21 @@
       </figure>
     </div>
     <p class="letter-eyebrow intro-el">삼가 인사 올립니다</p>
-    <p class="letter-body intro-el">민지와 병주, 두 사람이 마음을 모아
-이제 두 집안 어른들께 정식으로 인사를 드리고자 합니다.
-
-바쁘신 걸음 내어주시는
-아버님, 어머님, 그리고 누나께
-진심으로 감사드리며
-
-따뜻한 마음으로
-첫 만남의 자리를 준비하였습니다.</p>
+    <div class="letter-body intro-el">
+      <p>민지와 병주, 두 사람이 마음을 모아 이제 양가 가족분들께 정식으로 인사를 드리고자 합니다.</p>
+      <p>바쁘신 걸음 내어주셔서 진심으로 감사드리며, 따뜻한 마음으로 첫 만남의 자리를 준비하였습니다.</p>
+    </div>
     <p class="letter-sign intro-el">민지 · 병주 올림</p>
   </section>
 
   <div class="divider" aria-hidden="true">
     <span class="line"></span>
-    <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M24 22 C30 8,38 8,44 20 C48 10,54 10,60 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/></svg>
+    <span class="dot"></span>
     <span class="line"></span>
   </div>
 
   <section class="card reveal" id="place">
-    <p class="eyebrow">PLACE · 장소</p>
+    <p class="eyebrow">장소</p>
     <p class="place-name">승지원</p>
     <p class="desc">정갈한 한정식으로 두 집안의 첫 인사를 나누는 자리입니다.</p>
 
@@ -466,7 +449,7 @@
   </section>
 
   <section class="card reveal" id="time">
-    <p class="eyebrow">DATE · 일시</p>
+    <p class="eyebrow">일시</p>
     <div class="time-row">
       <span class="time-date">2026. 9. 6.</span>
       <span class="time-day">일요일</span>
@@ -476,17 +459,22 @@
 
   <div class="divider" aria-hidden="true">
     <span class="line"></span>
-    <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M24 22 C30 8,38 8,44 20 C48 10,54 10,60 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/></svg>
+    <span class="dot"></span>
     <span class="line"></span>
   </div>
 
   <section class="card reveal" id="seating">
-    <p class="eyebrow">SEATING · 자리 안내</p>
+    <p class="eyebrow">자리 안내</p>
     <h2>양가 부모님이 마주보는 자리</h2>
     <p class="etiquette">출입구에서 먼 자리일수록 상석이라, 양가 부모님이 서로 마주보고 편히 대화 나누실 수 있도록 자리를 준비했습니다.</p>
 
     <div class="table-wrap">
       <p class="table-cap">상석 · 창가</p>
+      <div class="side-heads">
+        <p class="side-head">신랑측</p>
+        <span></span>
+        <p class="side-head bride">신부측</p>
+      </div>
       <div class="table-grid">
         <div class="side groom">
           <div class="seat"><div class="rel">아버지</div><div class="name">강만구</div></div>
@@ -503,21 +491,17 @@
         </div>
       </div>
       <p class="table-cap" style="margin-top:8px;">입구</p>
-      <div class="legend">
-        <span class="legend-item"><span class="legend-dot groom"></span>신랑측</span>
-        <span class="legend-item"><span class="legend-dot bride"></span>신부측</span>
-      </div>
     </div>
   </section>
 
   <div class="divider" aria-hidden="true">
     <span class="line"></span>
-    <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M24 22 C30 8,38 8,44 20 C48 10,54 10,60 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/></svg>
+    <span class="dot"></span>
     <span class="line"></span>
   </div>
 
   <section class="card reveal" id="menu">
-    <p class="eyebrow">MENU · 식사 안내</p>
+    <p class="eyebrow">식사 안내</p>
     <h2>정성 담은 한 상</h2>
     <span class="menu-badge">효도한정식</span>
 
@@ -571,12 +555,12 @@
 
   <div class="divider" aria-hidden="true">
     <span class="line"></span>
-    <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M24 22 C30 8,38 8,44 20 C48 10,54 10,60 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/></svg>
+    <span class="dot"></span>
     <span class="line"></span>
   </div>
 
   <section class="card reveal" id="schedule">
-    <p class="eyebrow">SCHEDULE · 당일 순서</p>
+    <p class="eyebrow">당일 순서</p>
     <h2>이렇게 함께해요</h2>
     <div class="steps">
       <div class="step">
@@ -604,16 +588,15 @@
   </section>
 
   <section class="closing reveal">
-    <p class="closing-body">소중한 첫 만남이 되도록
-정성을 다해 준비하겠습니다.
-
-그날, 웃음 가득한 자리에서 뵙겠습니다.</p>
+    <div class="closing-body">
+      <p>소중한 첫 만남이 되도록 정성을 다해 준비하겠습니다.</p>
+      <p>그날, 웃음 가득한 자리에서 뵙겠습니다.</p>
+    </div>
     <p class="closing-sign">민지 · 병주 드림</p>
   </section>
 
   <footer>
     <p class="fdate">2026. 9. 6. 일요일 · 승지원</p>
-    <p class="fmark">청실 · 홍실</p>
   </footer>
 
 </main>
