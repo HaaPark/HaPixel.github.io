@@ -277,11 +277,12 @@
   .park-note svg{ width:14px; height:14px; margin-top:3px; flex-shrink:0; color:var(--ink-soft);}
 
   /* time */
-  .time-row{ display:flex; align-items:center; gap:10px; margin-top:14px; }
-  .time-date{ font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; }
-  .time-day{ font-size:14px; font-weight:600; color:var(--ink-soft); }
+  .time-date{
+    font-size:26px; font-weight:800; margin-top:6px; color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
   .time-range{
-    margin-top:6px; font-size:16px; color:var(--ink-soft); font-variant-numeric:tabular-nums;
+    margin-top:8px; font-size:15px; color:var(--ink-soft); font-variant-numeric:tabular-nums;
   }
 
   /* seating */
@@ -346,7 +347,7 @@
   .step-desc{ font-size:13.5px; color:var(--ink-soft); margin-top:3px; }
 
   /* closing */
-  .closing{ padding:10px 26px 0; text-align:center; }
+  .closing{ padding:0 26px; text-align:center; }
   .closing-body{
     font-size:15.5px; line-height:1.9; color:var(--ink); letter-spacing:-.005em;
   }
@@ -397,7 +398,7 @@
     <p class="letter-eyebrow intro-el">삼가 인사 올립니다</p>
     <div class="letter-body intro-el">
       <p>민지와 병주, 두 사람이 마음을 모아<br>양가 가족분들께 정식으로 인사를 드리고자 합니다.</p>
-      <p>바쁘신 걸음 내어주셔서 진심으로 감사드리며,<br>따뜻한 마음으로 첫 만남의 자리를 준비하였습니다.</p>
+      <p>바쁘신 걸음 내어주셔서 진심으로 감사드리며,<br>설레는 마음으로 첫 만남의 자리를 준비하였습니다.</p>
     </div>
   </section>
 
@@ -430,11 +431,8 @@
 
   <section class="section reveal" id="time">
     <p class="eyebrow">일시</p>
-    <div class="time-row">
-      <span class="time-date">2026. 9. 6.</span>
-      <span class="time-day">일요일</span>
-    </div>
-    <p class="time-range">오전 11:30 – 오후 1:30</p>
+    <p class="time-date">2026. 9. 6.</p>
+    <p class="time-range">일요일 · 오전 11:30 – 오후 1:30</p>
   </section>
 
   <div class="divider" aria-hidden="true">
@@ -564,6 +562,12 @@
       </div>
     </div>
   </section>
+
+  <div class="divider" aria-hidden="true">
+    <span class="line"></span>
+    <span class="dot"></span>
+    <span class="line"></span>
+  </div>
 
   <section class="closing reveal">
     <div class="closing-body">
