@@ -5,15 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>민지 &amp; 병주 상견례 초대장</title>
 <meta name="description" content="민지와 병주의 상견례에 초대합니다.">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap">
 <style>
-  @font-face {
-    font-family: 'Pretendard Fallback';
-    src: local('Noto Sans KR');
-    size-adjust: 100%;
-  }
-
   :root{
     --ivory:#FFFFFF;
     --paper:#FFFFFF;
@@ -32,9 +27,11 @@
     margin:0;
     background:var(--ivory);
     color:var(--ink);
-    font-family:'Pretendard','Pretendard Fallback','Noto Sans KR',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;
+    font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
+    word-break:keep-all;
+    overflow-wrap:break-word;
   }
   body.sealed{ overflow:hidden; height:100vh; }
 
@@ -176,9 +173,6 @@
   .eyebrow{
     font-size:12.5px; font-weight:700; letter-spacing:.05em; color:var(--ink-soft);
   }
-  .section h2{
-    margin-top:8px; font-size:21px; font-weight:800; color:var(--ink);
-  }
   .section .desc{
     margin-top:8px; font-size:14px; line-height:1.7; color:var(--ink-soft);
   }
@@ -237,8 +231,10 @@
     .content{ padding-top:46px; }
   }
 
+  /* shared "primary answer" line (place name, menu name, etc.) */
+  .section-name{ font-size:24px; font-weight:800; margin-top:6px; color:var(--ink); }
+
   /* place / address */
-  .place-name{ font-size:24px; font-weight:800; margin-top:6px; }
   .address-box{
     margin-top:16px; padding:16px 16px; background:var(--paper-alt);
     border-radius:12px; border:1px solid var(--line);
@@ -293,11 +289,7 @@
   }
 
   /* seating */
-  .etiquette{
-    margin-top:6px; font-size:13.5px; color:var(--ink-soft); line-height:1.6;
-    background:var(--paper-alt); border-radius:10px; padding:10px 12px;
-  }
-  .table-wrap{ margin-top:20px; }
+  .table-wrap{ margin-top:24px; }
   .table-cap{
     text-align:center; font-size:12px; font-weight:700; letter-spacing:.04em;
     color:var(--ink-soft);
@@ -325,13 +317,8 @@
   .seat .name{ font-size:14px; font-weight:700; margin-top:2px; color:var(--ink); }
 
   /* menu */
-  .menu-badge{
-    display:inline-block; margin-top:6px; padding:5px 12px;
-    background:var(--amber); color:var(--paper);
-    font-size:13px; font-weight:700; border-radius:999px;
-  }
   .menu-group{ margin-top:20px; }
-  .menu-group:first-of-type{ margin-top:18px; }
+  .menu-group:first-of-type{ margin-top:24px; }
   .menu-group-title{
     font-size:12px; font-weight:700; letter-spacing:.03em; color:var(--ink-soft);
     padding-bottom:6px; border-bottom:1px solid var(--line);
@@ -347,7 +334,7 @@
   .menu-item.special .mdot{ background:var(--amber); }
 
   /* schedule */
-  .steps{ margin-top:18px; display:flex; flex-direction:column; }
+  .steps{ margin-top:22px; display:flex; flex-direction:column; }
   .step{ display:flex; gap:14px; }
   .step-track{ display:flex; flex-direction:column; align-items:center; }
   .step-num{
@@ -427,7 +414,7 @@
 
   <section class="section reveal" id="place">
     <p class="eyebrow">장소</p>
-    <p class="place-name">승지원</p>
+    <p class="section-name">승지원</p>
     <p class="desc">정갈한 한정식으로 두 집안의 첫 인사를 나누는 자리입니다.</p>
 
     <div class="address-box">
@@ -463,8 +450,7 @@
 
   <section class="section reveal" id="seating">
     <p class="eyebrow">자리 안내</p>
-    <h2>양가 부모님이 마주보는 자리</h2>
-    <p class="etiquette">출입구에서 먼 자리일수록 상석이라, 양가 부모님이 서로 마주보고 편히 대화 나누실 수 있도록 자리를 준비했습니다.</p>
+    <p class="desc">출입구에서 먼 자리일수록 상석이라, 양가 부모님이 서로 마주보고 편히 대화 나누실 수 있도록 자리를 준비했습니다.</p>
 
     <div class="table-wrap">
       <p class="table-cap">상석 · 창가</p>
@@ -500,8 +486,8 @@
 
   <section class="section reveal" id="menu">
     <p class="eyebrow">식사 안내</p>
-    <h2>정성 담은 한 상</h2>
-    <span class="menu-badge">효도한정식</span>
+    <p class="section-name">효도한정식</p>
+    <p class="desc">정성을 담은 한 상입니다.</p>
 
     <div class="menu-group">
       <p class="menu-group-title">죽 · 찬</p>
@@ -559,7 +545,6 @@
 
   <section class="section reveal" id="schedule">
     <p class="eyebrow">당일 순서</p>
-    <h2>이렇게 함께해요</h2>
     <div class="steps">
       <div class="step">
         <div class="step-track"><div class="step-num">1</div><div class="step-line"></div></div>
