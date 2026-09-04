@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>민지 &amp; 병주 상견례 초대장</title>
+<meta name="description" content="민지와 병주의 상견례에 초대합니다.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  @font-face {
+    font-family: 'Pretendard Fallback';
+    src: local('Noto Sans KR');
+    size-adjust: 100%;
+  }
+
+  :root{
+    --ivory:#F7F0DF;
+    --paper:#FFFCF4;
+    --paper-alt:#FBF2DE;
+    --ink:#3B2E22;
+    --ink-soft:#82715c;
+    --line:#E4D0A6;
+    --amber:#AD733A;
+    --amber-deep:#875426;
+    --cheong:#4C6B87;
+    --cheong-soft:#DFE7EC;
+    --hong:#B4525A;
+    --hong-soft:#F4DFE0;
+    --shadow: 0 20px 44px rgba(59,46,34,.12);
+  }
+
+  *{box-sizing:border-box;}
+  html{background:var(--ivory);}
+  body{
+    margin:0;
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:'Pretendard','Pretendard Fallback','Noto Sans KR',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body.sealed{ overflow:hidden; height:100vh; }
+
+  img{max-width:100%;}
+  [hidden]{display:none!important;}
+
+  h1,h2,h3,p{margin:0;}
+  h2{text-wrap:balance;}
+
+  .paper-texture{
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(173,115,58,.05), transparent 40%),
+      radial-gradient(circle at 85% 76%, rgba(76,107,135,.05), transparent 42%);
+  }
+
+  /* ---------- Cover / Envelope ---------- */
+  .cover{
+    position:fixed; inset:0; z-index:40;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(circle at 50% 14%, rgba(173,115,58,.10), transparent 46%),
+      var(--ivory);
+    cursor:pointer;
+    transition:opacity .5s ease .55s;
+  }
+  .cover.opened{ opacity:0; pointer-events:none; }
+
+  .cover-inner{
+    width:min(86vw,360px);
+    text-align:center;
+    padding:0 8px;
+  }
+  .cover-eyebrow{
+    font-size:12px; font-weight:600; letter-spacing:.32em;
+    color:var(--amber-deep); margin-bottom:18px;
+  }
+  .cover-eyebrow .dot{ color:var(--hong); margin:0 6px; }
+  .cover-title{
+    font-size:clamp(26px,7.6vw,32px);
+    font-weight:800; line-height:1.42; letter-spacing:-.01em;
+    color:var(--ink);
+  }
+  .cover-sub{
+    margin-top:14px; font-size:14.5px; line-height:1.7; color:var(--ink-soft);
+  }
+
+  .envelope{
+    width:min(70vw,240px); margin:34px auto 0;
+    perspective:900px;
+  }
+  .envelope-body{
+    position:relative; width:100%; aspect-ratio:8/5;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:6px;
+    box-shadow:var(--shadow);
+    overflow:visible;
+  }
+  .envelope-body::before,.envelope-body::after{
+    content:""; position:absolute; bottom:0; width:50%; height:100%;
+    background:var(--paper-alt);
+    border:1px solid var(--line);
+  }
+  .envelope-body::before{ left:0; clip-path:polygon(0 0,100% 100%,0 100%); border-radius:6px 0 0 6px;}
+  .envelope-body::after{ right:0; clip-path:polygon(100% 0,100% 100%,0 100%); border-radius:0 6px 6px 0;}
+  .envelope-flap{
+    position:absolute; top:-1px; left:-1px; right:-1px; height:56%;
+    background:var(--paper-alt);
+    border:1px solid var(--line);
+    clip-path:polygon(0 0,100% 0,50% 92%);
+    transform-origin:top center;
+    transform:rotateX(0deg);
+    transition:transform 1s cubic-bezier(.6,.05,.28,1);
+    border-radius:6px 6px 0 0;
+    z-index:3;
+  }
+  .cover.opened .envelope-flap{ transform:rotateX(-172deg); }
+
+  .seal{
+    position:absolute; left:50%; top:38%; transform:translate(-50%,-50%);
+    width:52px; height:52px; border-radius:50%;
+    background:var(--amber);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 6px 14px rgba(135,84,38,.35);
+    z-index:4;
+    transition:opacity .35s ease .25s, transform .35s ease .25s;
+  }
+  .cover.opened .seal{ opacity:0; transform:translate(-50%,-50%) scale(.4); }
+  .seal svg{ width:26px; height:14px; color:var(--paper); }
+
+  .letter-peek{
+    position:absolute; left:6%; right:6%; bottom:-4%; height:70%;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:5px 5px 0 0;
+    z-index:2;
+    transition:transform 1s cubic-bezier(.5,0,.2,1) .18s;
+  }
+  .cover.opened .letter-peek{ transform:translateY(-64%); }
+
+  .cover-hint{
+    margin-top:30px; font-size:12.5px; color:var(--ink-soft);
+    letter-spacing:.04em;
+    animation:pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:.55;} 50%{opacity:1;} }
+
+  /* ---------- Content ---------- */
+  .content{
+    max-width:460px; margin:0 auto;
+    padding:56px 0 90px;
+  }
+
+  .letter{
+    padding:0 26px;
+  }
+  .letter-eyebrow{
+    font-size:12px; font-weight:600; letter-spacing:.28em; color:var(--amber-deep);
+    text-align:center;
+  }
+  .letter-body{
+    margin-top:22px; font-size:16px; line-height:2; color:var(--ink);
+    text-align:center;
+    white-space:pre-line;
+  }
+  .letter-sign{
+    margin-top:26px; text-align:center; font-size:14.5px; color:var(--ink-soft); font-weight:600;
+  }
+
+  .divider{
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    margin:46px 0; padding:0 26px;
+  }
+  .divider .line{ flex:1; height:1px; background:var(--line); }
+  .divider svg{ width:30px; height:16px; color:var(--amber); flex-shrink:0; }
+
+  section.card{
+    margin:0 18px 18px; padding:26px 24px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+  }
+  section.card + section.card{ margin-top:14px; }
+
+  .eyebrow{
+    font-size:12px; font-weight:700; letter-spacing:.22em; color:var(--amber-deep);
+  }
+  .card h2{
+    margin-top:8px; font-size:21px; font-weight:800; color:var(--ink);
+  }
+  .card .desc{
+    margin-top:8px; font-size:14px; line-height:1.7; color:var(--ink-soft);
+  }
+
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .envelope-flap,.letter-peek,.seal,.cover{ transition:none!important; }
+    .cover-hint{ animation:none; }
+  }
+
+  /* place / address */
+  .place-name{ font-size:24px; font-weight:800; margin-top:6px; }
+  .address-box{
+    margin-top:16px; padding:16px 16px; background:var(--paper-alt);
+    border-radius:12px; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .address-text{ font-size:14.5px; color:var(--ink); line-height:1.5; }
+  .copy-btn{
+    flex-shrink:0; border:1px solid var(--line); background:var(--paper);
+    color:var(--amber-deep); font-weight:700; font-size:12.5px;
+    padding:8px 12px; border-radius:8px; cursor:pointer;
+    font-family:inherit;
+  }
+  .copy-btn:focus-visible, .map-btn:focus-visible, .cover:focus-visible{
+    outline:2px solid var(--amber-deep); outline-offset:2px;
+  }
+  .toast{
+    margin-top:10px; font-size:12.5px; color:var(--amber-deep); font-weight:600;
+    height:16px; opacity:0; transition:opacity .3s ease;
+  }
+  .toast.show{ opacity:1; }
+
+  .map-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    margin-top:14px; width:100%; padding:14px;
+    background:var(--ink); color:var(--paper);
+    border-radius:12px; text-decoration:none;
+    font-weight:700; font-size:15px;
+  }
+  .map-btn svg{ width:16px; height:16px; }
+  .park-note{
+    margin-top:12px; font-size:13px; color:var(--ink-soft);
+    display:flex; gap:6px; align-items:flex-start;
+  }
+  .park-note svg{ width:14px; height:14px; margin-top:3px; flex-shrink:0; color:var(--amber);}
+
+  /* time */
+  .time-row{ display:flex; align-items:baseline; gap:12px; margin-top:14px; }
+  .time-date{ font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .time-day{ font-size:14px; font-weight:600; color:var(--hong); }
+  .time-range{
+    margin-top:6px; font-size:16px; color:var(--ink-soft); font-variant-numeric:tabular-nums;
+  }
+
+  /* seating */
+  .etiquette{
+    margin-top:6px; font-size:13.5px; color:var(--ink-soft); line-height:1.6;
+    background:var(--paper-alt); border-radius:10px; padding:10px 12px;
+  }
+  .table-wrap{ margin-top:20px; }
+  .table-cap{
+    text-align:center; font-size:12px; font-weight:700; letter-spacing:.18em;
+    color:var(--ink-soft);
+  }
+  .table-grid{
+    display:grid; grid-template-columns:1fr auto 1fr;
+    gap:8px 10px; margin-top:10px; align-items:stretch;
+  }
+  .side{ display:flex; flex-direction:column; gap:8px; }
+  .side.groom{ align-items:stretch; }
+  .side.bride{ align-items:stretch; }
+  .runner{
+    width:14px; border-radius:8px;
+    background:repeating-linear-gradient(180deg,var(--amber) 0 10px, var(--hong) 10px 20px, var(--cheong) 20px 30px);
+    opacity:.35;
+  }
+  .seat{
+    border-radius:10px; padding:10px 8px; text-align:center;
+    border:1px solid transparent;
+  }
+  .seat .rel{ font-size:11px; font-weight:700; letter-spacing:.02em; }
+  .seat .name{ font-size:14px; font-weight:700; margin-top:2px; }
+  .side.groom .seat{ background:var(--cheong-soft); }
+  .side.groom .seat .rel{ color:var(--cheong); }
+  .side.bride .seat{ background:var(--hong-soft); }
+  .side.bride .seat .rel{ color:var(--hong); }
+  .table-labels{
+    display:flex; justify-content:space-between; margin-top:10px; padding:0 2px;
+    font-size:11.5px; color:var(--ink-soft); font-weight:600;
+  }
+  .legend{ display:flex; gap:16px; margin-top:16px; justify-content:center; }
+  .legend-item{ display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink-soft); }
+  .legend-dot{ width:9px; height:9px; border-radius:50%; }
+  .legend-dot.groom{ background:var(--cheong); }
+  .legend-dot.bride{ background:var(--hong); }
+
+  /* menu */
+  .menu-badge{
+    display:inline-block; margin-top:6px; padding:5px 12px;
+    background:var(--amber); color:var(--paper);
+    font-size:13px; font-weight:700; border-radius:999px;
+  }
+  .menu-group{ margin-top:20px; }
+  .menu-group:first-of-type{ margin-top:18px; }
+  .menu-group-title{
+    font-size:12px; font-weight:700; letter-spacing:.14em; color:var(--ink-soft);
+    padding-bottom:6px; border-bottom:1px solid var(--line);
+  }
+  .menu-items{ margin-top:10px; display:flex; flex-wrap:wrap; gap:8px 10px; }
+  .menu-item{
+    font-size:14px; color:var(--ink); padding:4px 0;
+    display:flex; align-items:center; gap:6px;
+  }
+  .menu-item.special{ color:var(--amber-deep); font-weight:700; }
+  .menu-item .mdot{ width:5px; height:5px; border-radius:50%; background:var(--line); flex-shrink:0; }
+  .menu-item.special .mdot{ background:var(--amber); }
+
+  /* schedule */
+  .steps{ margin-top:18px; display:flex; flex-direction:column; }
+  .step{ display:flex; gap:14px; }
+  .step-track{ display:flex; flex-direction:column; align-items:center; }
+  .step-num{
+    width:28px; height:28px; border-radius:50%; background:var(--ink); color:var(--paper);
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700;
+    flex-shrink:0;
+  }
+  .step-line{ width:1px; flex:1; background:var(--line); margin:4px 0; }
+  .step:last-child .step-line{ display:none; }
+  .step-body{ padding-bottom:26px; }
+  .step:last-child .step-body{ padding-bottom:0; }
+  .step-title{ font-size:16px; font-weight:700; margin-top:2px; }
+  .step-desc{ font-size:13.5px; color:var(--ink-soft); margin-top:3px; }
+
+  /* closing */
+  .closing{ padding:10px 26px 0; text-align:center; }
+  .closing-body{
+    font-size:15.5px; line-height:2; color:var(--ink); white-space:pre-line;
+  }
+  .closing-sign{
+    margin-top:20px; font-size:15px; font-weight:800; color:var(--amber-deep);
+  }
+
+  footer{
+    margin-top:50px; text-align:center; padding:0 26px;
+  }
+  footer .fdate{ font-size:12.5px; color:var(--ink-soft); }
+  footer .fmark{ margin-top:10px; color:var(--line); font-size:11px; letter-spacing:.3em; }
+</style>
+</head>
+<body class="sealed">
+
+<div class="cover" id="cover" role="button" tabindex="0" aria-label="눌러서 초대장 열기">
+  <div class="cover-inner">
+    <p class="cover-eyebrow">청실<span class="dot">·</span>홍실</p>
+    <h1 class="cover-title">민지 &amp; 병주의<br>상견례에 초대합니다</h1>
+    <p class="cover-sub">두 사람의 인연이<br>두 집안의 인연이 되는 날</p>
+    <div class="envelope" aria-hidden="true">
+      <div class="envelope-body">
+        <div class="letter-peek"></div>
+        <div class="envelope-flap"></div>
+        <div class="seal">
+          <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </div>
+    <p class="cover-hint">화면을 눌러 열어보세요</p>
+  </div>
+</div>
+
+<main class="content paper-texture" id="content">
+
+  <section class="letter reveal" id="greeting">
+    <p class="letter-eyebrow">삼가 인사 올립니다</p>
+    <p class="letter-body">민지와 병주, 두 사람이 마음을 모아
+이제 두 집안 어른들께 정식으로 인사를 드리고자 합니다.
+
+바쁘신 걸음 내어주시는
+아버님, 어머님, 그리고 누나께
+진심으로 감사드리며
+
+따뜻한 마음으로
+첫 만남의 자리를 준비하였습니다.</p>
+    <p class="letter-sign">민지 · 병주 올림</p>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <span class="line"></span>
+    <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M24 22 C30 8,38 8,44 20 C48 10,54 10,60 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <section class="card reveal" id="place">
+    <p class="eyebrow">PLACE · 장소</p>
+    <p class="place-name">승지원</p>
+    <p class="desc">정갈한 한정식으로 두 집안의 첫 인사를 나누는 자리입니다.</p>
+
+    <div class="address-box">
+      <span class="address-text" id="addr-text">충남 천안시 서북구 백석동 26-3</span>
+      <button class="copy-btn" id="copy-btn" type="button">주소 복사</button>
+    </div>
+    <p class="toast" id="toast">주소를 복사했어요</p>
+
+    <a class="map-btn" href="https://naver.me/FCAzeRPk" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.4 7-12a7 7 0 1 0-14 0c0 5.6 7 12 7 12Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
+      네이버 지도로 길찾기
+    </a>
+    <p class="park-note">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M9 8h3.5a2.5 2.5 0 0 1 0 5H9V8Zm0 0v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      식당 바로 앞 주차장을 이용하실 수 있습니다.
+    </p>
+  </section>
+
+  <section class="card reveal" id="time">
+    <p class="eyebrow">DATE · 일시</p>
+    <div class="time-row">
+      <span class="time-date">2026. 9. 6.</span>
+      <span class="time-day">일요일</span>
+    </div>
+    <p class="time-range">오전 11:30 – 오후 1:30</p>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <span class="line"></span>
+    <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M24 22 C30 8,38 8,44 20 C48 10,54 10,60 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <section class="card reveal" id="seating">
+    <p class="eyebrow">SEATING · 자리 안내</p>
+    <h2>양가 부모님이 마주보는 자리</h2>
+    <p class="etiquette">출입구에서 먼 자리일수록 상석이라, 양가 부모님이 서로 마주보고 편히 대화 나누실 수 있도록 자리를 준비했습니다.</p>
+
+    <div class="table-wrap">
+      <p class="table-cap">상석 · 창가</p>
+      <div class="table-grid">
+        <div class="side groom">
+          <div class="seat"><div class="rel">아버지</div><div class="name">강만구</div></div>
+          <div class="seat"><div class="rel">어머니</div><div class="name">김진양</div></div>
+          <div class="seat"><div class="rel">신랑</div><div class="name">강병주</div></div>
+          <div class="seat"><div class="rel">누나</div><div class="name">강나연</div></div>
+        </div>
+        <div class="runner" aria-hidden="true"></div>
+        <div class="side bride">
+          <div class="seat"><div class="rel">아버지</div><div class="name">박형준</div></div>
+          <div class="seat"><div class="rel">어머니</div><div class="name">안세란</div></div>
+          <div class="seat"><div class="rel">신부</div><div class="name">박민지</div></div>
+          <div class="seat" style="visibility:hidden"><div class="rel">-</div><div class="name">-</div></div>
+        </div>
+      </div>
+      <p class="table-cap" style="margin-top:8px;">입구</p>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot groom"></span>신랑측</span>
+        <span class="legend-item"><span class="legend-dot bride"></span>신부측</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <span class="line"></span>
+    <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M24 22 C30 8,38 8,44 20 C48 10,54 10,60 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <section class="card reveal" id="menu">
+    <p class="eyebrow">MENU · 식사 안내</p>
+    <h2>정성 담은 한 상</h2>
+    <span class="menu-badge">효도한정식</span>
+
+    <div class="menu-group">
+      <p class="menu-group-title">죽 · 찬</p>
+      <div class="menu-items">
+        <span class="menu-item"><span class="mdot"></span>계절죽</span>
+        <span class="menu-item"><span class="mdot"></span>물김치</span>
+      </div>
+    </div>
+    <div class="menu-group">
+      <p class="menu-group-title">전채</p>
+      <div class="menu-items">
+        <span class="menu-item"><span class="mdot"></span>활어회</span>
+        <span class="menu-item"><span class="mdot"></span>야채샐러드</span>
+        <span class="menu-item"><span class="mdot"></span>부추해물전</span>
+        <span class="menu-item"><span class="mdot"></span>잡채</span>
+        <span class="menu-item"><span class="mdot"></span>가지튀김</span>
+        <span class="menu-item special"><span class="mdot"></span>구절판</span>
+        <span class="menu-item"><span class="mdot"></span>탕평채</span>
+        <span class="menu-item special"><span class="mdot"></span>계절탕 (황태탕)</span>
+      </div>
+    </div>
+    <div class="menu-group">
+      <p class="menu-group-title">메인</p>
+      <div class="menu-items">
+        <span class="menu-item"><span class="mdot"></span>소갈비찜</span>
+        <span class="menu-item special"><span class="mdot"></span>숯불우대갈비</span>
+        <span class="menu-item special"><span class="mdot"></span>우럭탕수</span>
+        <span class="menu-item"><span class="mdot"></span>깐쇼새우</span>
+        <span class="menu-item"><span class="mdot"></span>상추겉절이</span>
+        <span class="menu-item"><span class="mdot"></span>겉절이김치</span>
+        <span class="menu-item"><span class="mdot"></span>묵은지</span>
+        <span class="menu-item"><span class="mdot"></span>삼총사</span>
+      </div>
+    </div>
+    <div class="menu-group">
+      <p class="menu-group-title">식사</p>
+      <div class="menu-items">
+        <span class="menu-item"><span class="mdot"></span>된장찌개 · 3찬</span>
+        <span class="menu-item"><span class="mdot"></span>공기밥</span>
+      </div>
+    </div>
+    <div class="menu-group">
+      <p class="menu-group-title">후식</p>
+      <div class="menu-items">
+        <span class="menu-item"><span class="mdot"></span>계절차</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <span class="line"></span>
+    <svg viewBox="0 0 64 32" fill="none"><path d="M4 22 C10 8,18 8,24 20 C28 10,34 10,40 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M24 22 C30 8,38 8,44 20 C48 10,54 10,60 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <section class="card reveal" id="schedule">
+    <p class="eyebrow">SCHEDULE · 당일 순서</p>
+    <h2>이렇게 함께해요</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-track"><div class="step-num">1</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <p class="step-title">식사</p>
+          <p class="step-desc">승지원에서 효도한정식으로 첫 인사를 나눕니다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-track"><div class="step-num">2</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <p class="step-title">사진 촬영</p>
+          <p class="step-desc">다 함께 기념사진을 간단히 남깁니다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-track"><div class="step-num">3</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <p class="step-title">카페</p>
+          <p class="step-desc">근처 카페로 자리를 옮겨 편하게 마무리합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing reveal">
+    <p class="closing-body">소중한 첫 만남이 되도록
+정성을 다해 준비하겠습니다.
+
+그날, 웃음 가득한 자리에서 뵙겠습니다.</p>
+    <p class="closing-sign">민지 · 병주 드림</p>
+  </section>
+
+  <footer>
+    <p class="fdate">2026. 9. 6. 일요일 · 승지원</p>
+    <p class="fmark">청실 · 홍실</p>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  var cover = document.getElementById('cover');
+  var body = document.body;
+  var opened = false;
+
+  function openCover(){
+    if(opened) return;
+    opened = true;
+    cover.classList.add('opened');
+    setTimeout(function(){
+      body.classList.remove('sealed');
+    }, 950);
+  }
+
+  cover.addEventListener('click', openCover);
+  cover.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      openCover();
+    }
+  });
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reveals = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('in-view'); });
+  }
+
+  var copyBtn = document.getElementById('copy-btn');
+  var addrText = document.getElementById('addr-text');
+  var toast = document.getElementById('toast');
+  if(copyBtn){
+    copyBtn.addEventListener('click', function(){
+      var text = addrText.textContent.trim();
+      function showToast(){
+        toast.classList.add('show');
+        setTimeout(function(){ toast.classList.remove('show'); }, 1600);
+      }
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(showToast, showToast);
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast();
+        }
+      } catch(err){
+        showToast();
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
