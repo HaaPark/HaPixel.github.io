@@ -65,6 +65,11 @@
     transition:opacity .5s ease .55s;
   }
   .cover.opened{ opacity:0; pointer-events:none; }
+  @media (hover:hover){
+    .cover:hover .envelope-body{ transform:translateY(-3px); box-shadow:0 26px 52px rgba(59,46,34,.16); }
+  }
+  .cover:active .envelope-body{ transform:scale(.98); }
+  .envelope-body{ transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s ease; }
 
   .cover-inner{
     width:min(86vw,360px);
@@ -196,10 +201,49 @@
 
   .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
   .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* intro cascade (photo + greeting), driven explicitly on envelope-open */
+  .intro-el{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+  .intro-el.in-view{ opacity:1; transform:translateY(0); }
+
   @media (prefers-reduced-motion:reduce){
-    .reveal{ opacity:1; transform:none; transition:none; }
-    .envelope-flap,.letter-peek,.seal,.cover{ transition:none!important; }
+    .reveal,.intro-el{ opacity:1; transform:none; transition:none; }
+    .envelope-flap,.letter-peek,.seal,.cover,.polaroid{ transition:none!important; }
     .cover-hint{ animation:none; }
+  }
+
+  /* photo */
+  .polaroid-wrap{ display:flex; justify-content:center; margin-bottom:26px; transform:translateY(16px) scale(.94); }
+  .polaroid-wrap.in-view{ transform:translateY(0) scale(1); }
+  .polaroid{
+    position:relative; margin:0; background:#fff; padding:12px 12px 30px;
+    width:min(64vw,224px);
+    box-shadow:0 20px 38px rgba(59,46,34,.22), 0 2px 6px rgba(59,46,34,.1);
+    transform:rotate(-4deg);
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+    cursor:pointer;
+  }
+  .polaroid::before{
+    content:""; position:absolute; top:-10px; left:50%; transform:translateX(-50%) rotate(-2deg);
+    width:56px; height:20px; border-radius:2px;
+    background:rgba(173,115,58,.28);
+  }
+  .polaroid img{ display:block; width:100%; }
+  .polaroid:hover{ box-shadow:0 26px 46px rgba(59,46,34,.26), 0 2px 6px rgba(59,46,34,.12); }
+  .polaroid.straight{ transform:rotate(0deg) scale(1.05); }
+
+  /* scroll progress */
+  .scroll-progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg,var(--cheong),var(--amber),var(--hong));
+    z-index:35; opacity:0; transition:opacity .4s ease;
+  }
+  body:not(.sealed) .scroll-progress{ opacity:1; }
+
+  @media (max-width:360px){
+    section.card{ padding:22px 18px; }
+    .letter{ padding:0 18px; }
+    .content{ padding-top:46px; }
   }
 
   /* place / address */
@@ -213,9 +257,13 @@
   .copy-btn{
     flex-shrink:0; border:1px solid var(--line); background:var(--paper);
     color:var(--amber-deep); font-weight:700; font-size:12.5px;
-    padding:8px 12px; border-radius:8px; cursor:pointer;
-    font-family:inherit;
+    padding:10px 14px; border-radius:8px; cursor:pointer;
+    font-family:inherit; transition:transform .15s ease, background .2s ease;
   }
+  @media (hover:hover){
+    .copy-btn:hover{ background:var(--paper-alt); }
+  }
+  .copy-btn:active{ transform:scale(.95); }
   .copy-btn:focus-visible, .map-btn:focus-visible, .cover:focus-visible{
     outline:2px solid var(--amber-deep); outline-offset:2px;
   }
@@ -231,7 +279,12 @@
     background:var(--ink); color:var(--paper);
     border-radius:12px; text-decoration:none;
     font-weight:700; font-size:15px;
+    transition:transform .15s ease, background .2s ease;
   }
+  @media (hover:hover){
+    .map-btn:hover{ background:var(--amber-deep); }
+  }
+  .map-btn:active{ transform:scale(.97); }
   .map-btn svg{ width:16px; height:16px; }
   .park-note{
     margin-top:12px; font-size:13px; color:var(--ink-soft);
@@ -344,6 +397,8 @@
 </head>
 <body class="sealed">
 
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
 <div class="cover" id="cover" role="button" tabindex="0" aria-label="눌러서 초대장 열기">
   <div class="cover-inner">
     <p class="cover-eyebrow">청실<span class="dot">·</span>홍실</p>
@@ -364,9 +419,14 @@
 
 <main class="content paper-texture" id="content">
 
-  <section class="letter reveal" id="greeting">
-    <p class="letter-eyebrow">삼가 인사 올립니다</p>
-    <p class="letter-body">민지와 병주, 두 사람이 마음을 모아
+  <section class="letter" id="greeting">
+    <div class="polaroid-wrap intro-el" id="polaroid-wrap">
+      <figure class="polaroid" id="polaroid">
+        <img src="couple.jpg" alt="민지와 병주" width="900" height="1059" loading="eager" decoding="async">
+      </figure>
+    </div>
+    <p class="letter-eyebrow intro-el">삼가 인사 올립니다</p>
+    <p class="letter-body intro-el">민지와 병주, 두 사람이 마음을 모아
 이제 두 집안 어른들께 정식으로 인사를 드리고자 합니다.
 
 바쁘신 걸음 내어주시는
@@ -375,7 +435,7 @@
 
 따뜻한 마음으로
 첫 만남의 자리를 준비하였습니다.</p>
-    <p class="letter-sign">민지 · 병주 올림</p>
+    <p class="letter-sign intro-el">민지 · 병주 올림</p>
   </section>
 
   <div class="divider" aria-hidden="true">
@@ -563,14 +623,29 @@
   var cover = document.getElementById('cover');
   var body = document.body;
   var opened = false;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var introEls = document.querySelectorAll('.intro-el');
 
   function openCover(){
     if(opened) return;
     opened = true;
     cover.classList.add('opened');
+
+    if(reduceMotion){
+      body.classList.remove('sealed');
+      introEls.forEach(function(el){ el.classList.add('in-view'); });
+      return;
+    }
+
     setTimeout(function(){
       body.classList.remove('sealed');
     }, 950);
+
+    // photo slips out first, then the greeting text cascades in beneath it
+    introEls.forEach(function(el, i){
+      setTimeout(function(){ el.classList.add('in-view'); }, 480 + i * 170);
+    });
   }
 
   cover.addEventListener('click', openCover);
@@ -581,7 +656,6 @@
     }
   });
 
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var reveals = document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window && !reduceMotion){
     var io = new IntersectionObserver(function(entries){
@@ -595,6 +669,32 @@
     reveals.forEach(function(el){ io.observe(el); });
   } else {
     reveals.forEach(function(el){ el.classList.add('in-view'); });
+  }
+
+  var polaroid = document.getElementById('polaroid');
+  if(polaroid){
+    polaroid.addEventListener('click', function(){
+      polaroid.classList.toggle('straight');
+    });
+  }
+
+  var progress = document.getElementById('scroll-progress');
+  if(progress){
+    var ticking = false;
+    function updateProgress(){
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - doc.clientHeight;
+      var pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
+      progress.style.width = pct + '%';
+      ticking = false;
+    }
+    window.addEventListener('scroll', function(){
+      if(!ticking){
+        window.requestAnimationFrame(updateProgress);
+        ticking = true;
+      }
+    }, { passive: true });
+    updateProgress();
   }
 
   var copyBtn = document.getElementById('copy-btn');
